@@ -73,6 +73,7 @@ def plot_sample_trial(task):
 
     axs[1].plot(Y_tar[0,:,:])
     axs[1].set_xlabel('Time step')
+    axs[1].set_ylim([-1.1,1.1])
     axs[1].set_ylabel('Output unit')
     axs[1].set_title('Target output sequence')
 
