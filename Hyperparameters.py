@@ -35,7 +35,7 @@ training_params = {
     "lr": 0.001, # Learning rate
     "l1_reg": 1e-6, # l1 regularization parameter
     "response_weight": 100, # Weight of response loss
-    "steps": 1000 # Number of training steps
+    "steps": 10000 # Number of training steps
 }
 
 
