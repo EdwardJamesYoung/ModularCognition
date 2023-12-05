@@ -15,6 +15,11 @@ import Hyperparameters as hp
 import Tasks
 import Visualisation_helpers
 
+if torch.cuda.is_available():
+    DEVICE = torch.device("cuda:0")
+else:
+    DEVICE = torch.device("cpu")
+
 # Get the hyperparameters
 task_params = hp.get_task_params()
 network_params = hp.get_network_params()
@@ -53,9 +58,9 @@ class Net(nn.Module):
     def __init__(self):
         super().__init__()
         self.Layers = nn.ModuleDict({
-            'input': nn.Linear(input_dim, N, bias = False),
-            'recurrent': nn.Linear(N, N, bias = True),
-            'output': nn.Linear(N, output_dim, bias = True)
+            'input': nn.Linear(input_dim, N, bias = False, device=DEVICE),
+            'recurrent': nn.Linear(N, N, bias = True, device=DEVICE),
+            'output': nn.Linear(N, output_dim, bias = True, device=DEVICE)
         })
 
     def forward_one_step(self, x, h):
@@ -119,8 +124,10 @@ def train_one_episode(model, optimiser, loss_function):
         X_list.append(X)
         Y_tar_list.append(Y_tar)
     
-    X = torch.cat(X_list, dim=0)
+    X = torch.cat(X_list, dim=0) 
+    X.to(DEVICE)
     Y_tar = torch.cat(Y_tar_list, dim=0)
+    Y_tar.to(DEVICE)
     # Compute the output of the network
     Y = model.forward(X)
 
@@ -185,6 +192,8 @@ def save_training_run(model, losses):
 if __name__ == "__main__":
     # Create the network
     model = Net()
+    # Move the network to the GPU if available
+    model.to(DEVICE)
     # Create the optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
     # Create the loss function
