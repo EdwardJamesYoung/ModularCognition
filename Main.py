@@ -116,7 +116,7 @@ def train_one_episode(model, optimiser, loss_function):
 
     # Generate the input sequence and target output for the task
     # Train on a batch consisting of each subtask
-    subtask_batch = int(128/len(task_list))
+    subtask_batch = int(256/len(task_list))
     X_list = []
     Y_tar_list = []
     for task in task_list:

@@ -3,9 +3,15 @@
 # Import the necessary packages
 import numpy as np
 import matplotlib.pyplot as plt
+import torch
 
 import Hyperparameters as hp
 import Tasks
+
+if torch.cuda.is_available():
+    DEVICE = torch.device("cuda:0")
+else:
+    DEVICE = torch.device("cpu")
 
 # Get the hyperparameters
 task_params = hp.get_task_params()
@@ -82,6 +88,8 @@ def plot_sample_trial(task):
 def discrepancy_visualisation(task, model):
     assert task[2] == 0, "This function only works for tasks with discrepancy responses."
     X, Y_tar = Tasks.task(task, batch_size = 250)
+    X = X.to(DEVICE)
+    Y_tar = Y_tar.to(DEVICE)
     # Compute the output of the network
     Y = model.forward(X)
     # Compute the average response during the response phase
@@ -90,7 +98,7 @@ def discrepancy_visualisation(task, model):
     Y_tar = Y_tar[:,(T_stim+T_comp+T_resp)*dt_inv:,:].mean(dim = 1)
     # Plot the scatter plot
     fig, ax = plt.subplots(figsize = (8,8))
-    ax.scatter(Y_avg.detach().numpy(), Y_tar.detach().numpy())
+    ax.scatter(Y_avg.cpu().detach().numpy(), Y_tar.cpu().detach().numpy())
     ax.set_xlabel('Average response', fontsize = 18)
     ax.set_ylabel('Target response', fontsize = 18)
     ax.set_xlim([-1,1])
@@ -104,6 +112,8 @@ def cosine_visualisation(task, model):
     assert task[2] == 1, "This function only works for tasks with cosine responses."
     batch_size = 8
     X, Y_tar = Tasks.task(task, batch_size = batch_size)
+    X = X.to(DEVICE)
+    Y_tar = Y_tar.to(DEVICE)
     # Compute the output of the network
     Y = model.forward(X)
 
@@ -111,8 +121,8 @@ def cosine_visualisation(task, model):
     t = np.linspace((T_stim+T_comp), T_tot, (T_resp+T_plan)*dt_inv)
     fig, axs = plt.subplots(batch_size, 1, figsize=(10,5*batch_size))
     for k in range(batch_size):
-        axs[k].plot(t, Y_tar[k,(T_stim+T_comp)*dt_inv:,:].detach().numpy(), label = 'Target')
-        axs[k].plot(t, Y[k,(T_stim+T_comp)*dt_inv:,:].detach().numpy(), label = 'Actual')
+        axs[k].plot(t, Y_tar[k,(T_stim+T_comp)*dt_inv:,:].cpu().detach().numpy(), label = 'Target')
+        axs[k].plot(t, Y[k,(T_stim+T_comp)*dt_inv:,:].cpu().detach().numpy(), label = 'Actual')
         axs[k].set_xlabel('Time')
         axs[k].set_ylabel('Output')
         axs[k].legend()

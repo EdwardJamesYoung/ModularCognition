@@ -13,9 +13,9 @@
 # Define hyperparameters for the task
 task_params = {
     "T_stim": 8, # Stimulus duration
-    "T_comp": 6, # Computation duration
+    "T_comp": 4, # Computation duration
     "T_plan": 2, # Planning duration
-    "T_resp": 8, # Response duration
+    "T_resp": 6, # Response duration
     "dt_inv": 4, # Number of time steps per time unit
     "circular_input_dim": 36, # Number of input units around the circle
     "go_input_dim": 1, # Number of input units for go cue
@@ -32,10 +32,10 @@ network_params = {
 
 # Define hyperparameters for training
 training_params = {
-    "lr": 0.001, # Learning rate
+    "lr": 0.0005, # Learning rate
     "l1_reg": 1e-6, # l1 regularization parameter
     "response_weight": 100, # Weight of response loss
-    "steps": 10000 # Number of training steps
+    "steps": 20000 # Number of training steps
 }
 
 
