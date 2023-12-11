@@ -70,14 +70,12 @@ class Net(nn.Module):
         # and the output at the current time step, y of size (batch_size, output_dim).
 
         # Compute the activities at the current time step
-        print(x.device, h.device, self.Layers['input'].weight.device, self.Layers['recurrent'].weight.device, self.Layers['output'].weight.device)
         h_new = (1 - dt)*h + dt*F.relu(self.Layers['input'](x) + self.Layers['recurrent'](h))
         # Compute the output at the current time step
         y = self.Layers['output'](h_new) 
         return y, h_new
     
     def forward(self, X):
-        print(X.device)
         # This method takes in a time series of inputs X of size (batch_size, T_steps, input_dim)
         # and returns the corresponding time series of outputs Y of size (batch_size, T_steps, output_dim)
 
@@ -127,11 +125,10 @@ def train_one_episode(model, optimiser, loss_function):
         Y_tar_list.append(Y_tar)
     
     X = torch.cat(X_list, dim=0) 
-    X.to(DEVICE)
+    X = X.to(DEVICE)
     Y_tar = torch.cat(Y_tar_list, dim=0)
-    Y_tar.to(DEVICE)
+    Y_tar = Y_tar.to(DEVICE)
     # Compute the output of the network
-    print(X.device, Y_tar.device)
     Y = model.forward(X)
 
     # Compute the loss
