@@ -103,7 +103,7 @@ def train_network(model, optimiser, loss_function):
         # Train the network for one episode
         loss = train_one_episode(model, optimiser, loss_function)
         # Store the loss
-        losses.append(loss.detach().numpy())
+        losses.append(loss.cpu().detach().numpy())
     return losses
 
 def train_one_episode(model, optimiser, loss_function):
