@@ -70,6 +70,7 @@ class Net(nn.Module):
         # and the output at the current time step, y of size (batch_size, output_dim).
 
         # Compute the activities at the current time step
+        print(x.device, h.device, self.Layers['input'].weight.device, self.Layers['recurrent'].weight.device, self.Layers['output'].weight.device)
         h_new = (1 - dt)*h + dt*F.relu(self.Layers['input'](x) + self.Layers['recurrent'](h))
         # Compute the output at the current time step
         y = self.Layers['output'](h_new) 
