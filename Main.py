@@ -80,9 +80,9 @@ class Net(nn.Module):
         # and returns the corresponding time series of outputs Y of size (batch_size, T_steps, output_dim)
 
         # Initialize the activities h of size (batch_size, N) to zero
-        h = torch.zeros(X.shape[0], N)
+        h = torch.zeros(X.shape[0], N, device=DEVICE)
         # Initialize the outputs Y of size (batch_size, T_steps, output_dim) to zero
-        Y = torch.zeros(X.shape[0], X.shape[1], output_dim)
+        Y = torch.zeros(X.shape[0], X.shape[1], output_dim, device=DEVICE)
         # Loop over the time steps
         for t in range(X.shape[1]):
             # Compute the output and activities at the current time step
