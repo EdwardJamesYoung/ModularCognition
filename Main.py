@@ -52,6 +52,7 @@ l1_reg = training_params["l1_reg"] # l1 regularization parameter
 lr = training_params["lr"] # Learning rate
 response_weight = training_params["response_weight"] # Weight of response loss
 steps = training_params["steps"] # Number of training steps
+batch_size = training_params["batch_size"] # Batch size
 
 # Set up the network architecture
 class Net(nn.Module):
@@ -116,7 +117,7 @@ def train_one_episode(model, optimiser, loss_function):
 
     # Generate the input sequence and target output for the task
     # Train on a batch consisting of each subtask
-    subtask_batch = int(256/len(task_list))
+    subtask_batch = int(batch_size/len(task_list))
     X_list = []
     Y_tar_list = []
     for task in task_list:

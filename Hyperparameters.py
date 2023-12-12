@@ -32,10 +32,11 @@ network_params = {
 
 # Define hyperparameters for training
 training_params = {
-    "lr": 0.0005, # Learning rate
+    "lr": 0.0003, # Learning rate
     "l1_reg": 1e-6, # l1 regularization parameter
-    "response_weight": 100, # Weight of response loss
-    "steps": 20000 # Number of training steps
+    "response_weight": 10, # Weight of response loss
+    "steps": 15000, # Number of training steps
+    "batch_size": 256, # Batch size
 }
 
 
